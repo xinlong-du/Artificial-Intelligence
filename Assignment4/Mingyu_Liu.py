@@ -67,10 +67,14 @@ def getScore(state):
     for x in range(boardWidth):                             # Search board for any pieces
         for y in range(boardHeight):
                 if state.board[x, y] == 1:
-                    appleDistance = (boardWidth - 1) - x + (boardHeight - 1) - y
+                    distC=abs(x-boardWidth+3)+abs(y-boardHeight+2)+1
+                    distD=abs(x-boardWidth+2)+abs(y-boardHeight+3)+1
+                    appleDistance = min(distC,distD)
                     score += pieceValue - appleDistance 
                 elif state.board[x, y] == -1:
-                    appleDistance = x + y
+                    distA=abs(x-1)+abs(y-2)+1
+                    distB=abs(x-2)+abs(y-1)+1
+                    appleDistance = min(distA,distB)
                     score -= pieceValue - appleDistance 
     return score
 

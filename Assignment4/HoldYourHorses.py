@@ -304,7 +304,7 @@ for player in playerModuleList:
     players.append(importlib.import_module(player))
 
 playerModuleList.append('Human Player')
-# singleGame(-1, 0)       # Play single game (refer to players by index in playerModuleList; -1 means human player)
+#singleGame(1, 0)       # Play single game (refer to players by index in playerModuleList; -1 means human player)
 computerTournament([0, 1])  # Play a tournament with any number of computer players (list of indices as above)
 
 win.close()
