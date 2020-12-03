@@ -66,15 +66,36 @@ def getScore(state):
     score = pointMultiplier * state.points 
     for x in range(boardWidth):                             # Search board for any pieces
         for y in range(boardHeight):
+                pieceValue=20
                 if state.board[x, y] == 1:
                     distC=abs(x-boardWidth+3)+abs(y-boardHeight+2)+1
                     distD=abs(x-boardWidth+2)+abs(y-boardHeight+3)+1
                     appleDistance = min(distC,distD)
+                    if x==2 and y==1:
+                        pieceValue=30
+                    elif x==1 and y==2:
+                        pieceValue=30
+                    elif x==boardWidth-1-2 and y==boardHeight-1-1:
+                        pieceValue=40
+                    elif x==boardWidth-1-1 and y==boardHeight-1-2:
+                        pieceValue=40
+                    elif x==boardWidth-1 and y==boardHeight-1:
+                        pieceValue=50
                     score += pieceValue - appleDistance 
                 elif state.board[x, y] == -1:
                     distA=abs(x-1)+abs(y-2)+1
                     distB=abs(x-2)+abs(y-1)+1
                     appleDistance = min(distA,distB)
+                    if x==2 and y==1:
+                        pieceValue=40
+                    elif x==1 and y==2:
+                        pieceValue=40
+                    elif x==boardWidth-1-2 and y==boardHeight-1-1:
+                        pieceValue=30
+                    elif x==boardWidth-1-1 and y==boardHeight-1-2:
+                        pieceValue=30
+                    elif x==0 and y==0:
+                        pieceValue=50
                     score -= pieceValue - appleDistance 
     return score
 
