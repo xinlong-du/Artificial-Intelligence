@@ -80,7 +80,7 @@ def getScore(state):
                     elif x==boardWidth-1-1 and y==boardHeight-1-2:
                         pieceValue=40
                     elif x==boardWidth-1 and y==boardHeight-1:
-                        pieceValue=50
+                        pieceValue=60
                     score += pieceValue - appleDistance 
                 elif state.board[x, y] == -1:
                     distA=abs(x-1)+abs(y-2)+1
@@ -95,7 +95,7 @@ def getScore(state):
                     elif x==boardWidth-1-1 and y==boardHeight-1-2:
                         pieceValue=30
                     elif x==0 and y==0:
-                        pieceValue=50
+                        pieceValue=60
                     score -= pieceValue - appleDistance 
     return score
 
