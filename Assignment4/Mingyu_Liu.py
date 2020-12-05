@@ -66,6 +66,12 @@ def getScore(state):
     score = pointMultiplier * state.points 
     for x in range(boardWidth):                             # Search board for any pieces
         for y in range(boardHeight):
+                # if state.board[x, y] == 1:
+                #     appleDistance = (boardWidth - 1) - x + (boardHeight - 1) - y
+                #     score += pieceValue - appleDistance 
+                # elif state.board[x, y] == -1:
+                #     appleDistance = x + y
+                #     score -= pieceValue - appleDistance 
                 pieceValue=20
                 if state.board[x, y] == 1:
                     distC=abs(x-boardWidth+3)+abs(y-boardHeight+2)+1
@@ -105,23 +111,42 @@ def timeOut():
     return duration.seconds + duration.microseconds * 1e-6 >= timeLimit
 
 # Use the minimax algorithm to look ahead <depthRemaining> moves and return the resulting score
-def lookAhead(state, depthRemaining):
+def lookAhead(state, depthRemaining,alpha,beta):
     if depthRemaining == 0 or state.gameOver:
         return getScore(state)
 
     if timeOut():
         return 0
     
-    bestScore = -9e9 * state.playerToMove
-
-    for move in getMoveOptions(state):
-        projectedState = makeMove(state, move)                    # Try out every possible move...
-        score = lookAhead(projectedState, depthRemaining - 1)     # ... and score the resulting state
-        
-        if (state.playerToMove == 1 and score > bestScore) or (state.playerToMove == -1 and score < bestScore):
-            bestScore = score           # Update bestScore if we have a new highest/lowest score for MAX/MIN
+    if state.playerToMove==1:
+        bestScore=-9e9
+        for move in getMoveOptions(state):
+            projectedState = makeMove(state, move)                    # Try out every possible move...
+            bestScore=max(bestScore,lookAhead(projectedState, depthRemaining - 1,alpha,beta))
+            alpha=max(alpha,bestScore)
+            if alpha>=beta:
+                break
+        return bestScore
+    else:
+        bestScore=9e9
+        for move in getMoveOptions(state):
+            projectedState = makeMove(state, move)                    # Try out every possible move...
+            bestScore=min(bestScore,lookAhead(projectedState, depthRemaining - 1,alpha,beta))
+            beta=min(beta,bestScore)
+            if alpha>=beta:
+                break
+        return bestScore
     
-    return bestScore
+    # bestScore = -9e9 * state.playerToMove
+
+    # for move in getMoveOptions(state):
+    #     projectedState = makeMove(state, move)                    # Try out every possible move...
+    #     score = lookAhead(projectedState, depthRemaining - 1)     # ... and score the resulting state
+        
+    #     if (state.playerToMove == 1 and score > bestScore) or (state.playerToMove == -1 and score < bestScore):
+    #         bestScore = score           # Update bestScore if we have a new highest/lowest score for MAX/MIN
+    
+    # return bestScore
 
 # Set global variables and initialize any data structures that the player will need
 def initPlayer(_startState, _timeLimit, _victoryPoints, _moveLimit, _assignedPlayer):
@@ -150,7 +175,7 @@ def getMove(state):
         # Try every possible next move, evaluate it using Minimax, and pick the one with best score
         for move in moveList:                       
             projectedState = makeMove(state, move)
-            score = lookAhead(projectedState, lookAheadDepth - 1)    # Find score through MiniMax for current lookAheadDepth
+            score = lookAhead(projectedState, lookAheadDepth - 1,-9e9,9e9)    # Find score through MiniMax for current lookAheadDepth
 
             if timeOut():
                 break
