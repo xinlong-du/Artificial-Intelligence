@@ -177,11 +177,14 @@ def getMove(state):
             projectedState = makeMove(state, move)
             score = lookAhead(projectedState, lookAheadDepth - 1,-9e9,9e9)    # Find score through MiniMax for current lookAheadDepth
 
-            if timeOut():
-                break
+            # if timeOut():
+            #     break
             
             if (state.playerToMove == 1 and score > currBestScore) or (state.playerToMove == -1 and score < currBestScore): 
                 currBestMove, currBestScore = move, score           # Found new best move during this iteration
+            
+            if timeOut():
+                break
            
         if not timeOut():       # Pick the move from the last lookahead depth as new favorite, unless the lookahead was incomplete 
             favoredMove, favoredMoveScore = currBestMove, currBestScore   
@@ -190,6 +193,8 @@ def getMove(state):
                 %(lookAheadDepth, duration.seconds + duration.microseconds * 1e-6, 
                 favoredMove[0], favoredMove[1], favoredMove[2], favoredMove[3], favoredMoveScore))
         else:
+            if (state.playerToMove == 1 and currBestScore>favoredMoveScore) or (state.playerToMove == -1 and currBestScore<favoredMoveScore):
+                favoredMove, favoredMoveScore = currBestMove, currBestScore
             print('Mingyu_Liu: Timeout!')
 
         if timeOut() or abs(favoredMoveScore) > victoryScoreThresh:   # Stop computation if timeout or certain victory/defeat predicted
