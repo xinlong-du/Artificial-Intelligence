@@ -30,7 +30,7 @@ squareColors = [color_rgb(40, 40, 210), color_rgb(50, 50, 255)]
 horseCoords = [(0, 1), (0, 2), (1, 0), (1, 1), (1, 2), (2, 0), (2, 1)]
 appleCoords = (0, 0)
 
-timeLimit = 2.0          # Limit for computer players' thinking time (seconds)
+timeLimit = 3.0          # Limit for computer players' thinking time (seconds)
 timeTolerance = 0.1       # Additional wait time (seconds) before timeout is called 
 
 victoryPoints = 100       # Number of points for the winner 

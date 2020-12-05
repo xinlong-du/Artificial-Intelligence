@@ -186,11 +186,11 @@ def getMove(state):
         if not timeOut():       # Pick the move from the last lookahead depth as new favorite, unless the lookahead was incomplete 
             favoredMove, favoredMoveScore = currBestMove, currBestScore   
             duration = datetime.now() - startTime
-            print('Knight_Rider: Depth %d finished at %.4f s, favored move (%d,%d)->(%d,%d), score = %.2f'
+            print('Mingyu_Liu: Depth %d finished at %.4f s, favored move (%d,%d)->(%d,%d), score = %.2f'
                 %(lookAheadDepth, duration.seconds + duration.microseconds * 1e-6, 
                 favoredMove[0], favoredMove[1], favoredMove[2], favoredMove[3], favoredMoveScore))
         else:
-            print('Knight_Rider: Timeout!')
+            print('Mingyu_Liu: Timeout!')
 
         if timeOut() or abs(favoredMoveScore) > victoryScoreThresh:   # Stop computation if timeout or certain victory/defeat predicted
             break
