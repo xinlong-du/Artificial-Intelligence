@@ -77,6 +77,12 @@ def getScore(state):
                     distC=abs(x-boardWidth+3)+abs(y-boardHeight+2)+1
                     distD=abs(x-boardWidth+2)+abs(y-boardHeight+3)+1
                     appleDistance = min(distC,distD)
+                    # if x==0 and y==1:
+                    #     pieceValue=10
+                    # elif x==1 and y==0:
+                    #     pieceValue=10
+                    # elif x==1 and y==1:
+                    #     pieceValue=10
                     if x==2 and y==1:
                         pieceValue=30
                     elif x==1 and y==2:
@@ -87,12 +93,24 @@ def getScore(state):
                         pieceValue=40
                     elif x==boardWidth-1 and y==boardHeight-1:
                         pieceValue=60
+                    elif x==boardWidth-1 and y==boardHeight-1-1:
+                        pieceValue=10
+                    elif x==boardWidth-1-1 and y==boardHeight-1:
+                        pieceValue=10
+                    elif x==boardWidth-1-1 and y==boardHeight-1-1:
+                        pieceValue=10
                     score += pieceValue - appleDistance 
                 elif state.board[x, y] == -1:
                     distA=abs(x-1)+abs(y-2)+1
                     distB=abs(x-2)+abs(y-1)+1
                     appleDistance = min(distA,distB)
-                    if x==2 and y==1:
+                    if x==0 and y==1:
+                        pieceValue=10
+                    elif x==1 and y==0:
+                        pieceValue=10
+                    elif x==1 and y==1:
+                        pieceValue=10
+                    elif x==2 and y==1:
                         pieceValue=40
                     elif x==1 and y==2:
                         pieceValue=40
@@ -102,6 +120,12 @@ def getScore(state):
                         pieceValue=30
                     elif x==0 and y==0:
                         pieceValue=60
+                    # elif x==boardWidth-1 and y==boardHeight-1-1:
+                    #     pieceValue=10
+                    # elif x==boardWidth-1-1 and y==boardHeight-1:
+                    #     pieceValue=10
+                    # elif x==boardWidth-1-1 and y==boardHeight-1-1:
+                    #     pieceValue=10
                     score -= pieceValue - appleDistance 
     return score
 
