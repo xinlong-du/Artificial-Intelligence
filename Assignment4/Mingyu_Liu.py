@@ -137,6 +137,28 @@ def lookAhead(state, depthRemaining,alpha,beta):
                 break
         return bestScore
     
+    # moveListSort=getMoveOptions(state)
+    # if state.playerToMove==1:
+    #     moveListSort.sort(key=lambda x: getScore(makeMove(state, x)),reverse=True)
+    #     bestScore=-9e9
+    #     for move in moveListSort:
+    #         projectedState = makeMove(state, move)                    # Try out every possible move...
+    #         bestScore=max(bestScore,lookAhead(projectedState, depthRemaining - 1,alpha,beta))
+    #         alpha=max(alpha,bestScore)
+    #         if alpha>=beta:
+    #             break
+    #     return bestScore
+    # else:
+    #     moveListSort.sort(key=lambda x: getScore(makeMove(state, x)),reverse=False)
+    #     bestScore=9e9
+    #     for move in moveListSort:
+    #         projectedState = makeMove(state, move)                    # Try out every possible move...
+    #         bestScore=min(bestScore,lookAhead(projectedState, depthRemaining - 1,alpha,beta))
+    #         beta=min(beta,bestScore)
+    #         if alpha>=beta:
+    #             break
+    #     return bestScore
+    
     # bestScore = -9e9 * state.playerToMove
 
     # for move in getMoveOptions(state):
@@ -164,6 +186,12 @@ def getMove(state):
     global startTime
     startTime = datetime.now()                      # Remember computation start time
     moveList = getMoveOptions(state)                # Get the list of possible moves
+    
+    # if state.playerToMove==1:
+    #     moveList.sort(key=lambda x: getScore(makeMove(state, x)),reverse=True)
+    # else:
+    #     moveList.sort(key=lambda x: getScore(makeMove(state, x)),reverse=False)
+    
     favoredMove = moveList[0]                       # Just choose first move from the list for now, in case we run out of time 
     favoredMoveScore = -9e9 * state.playerToMove    # Use this variable to remember the score for the favored move  
     
