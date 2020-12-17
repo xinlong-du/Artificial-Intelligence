@@ -1,2 +1,6 @@
 
 *.pyc
+
+Final/mnist.hdf5
+
+Final/mnist_double_data.pickle
