@@ -77,3 +77,5 @@ test  = model.evaluate(x_test, y_test, verbose=0)
 print('Test loss:', test[0])
 print('Test accuracy:',test[1])
 
+y_predict_raw = model.predict(x_test)
+y_predict=y_predict_raw.argmax(axis=1)
