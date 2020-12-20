@@ -55,7 +55,7 @@ def convert_residue(residue):
 def convert_structure(structure):
     result = np.empty([17,21])
     for idx, entry in enumerate(structure):
-        result[idx] = np.asarray( map(convert_residue, entry));
+        result[idx] = np.asarray(list(map(convert_residue, entry)));
     return result
 
 # Convert output to a 2x1 vector
@@ -113,7 +113,7 @@ class Neural_Network(object):
     def forward(self, X):
         # We perform a forward propagation through our network
           self.z = np.dot(X, self.W1) # product of X and W1 matricies
-          self.z2 = self.sigmoid(self.z) # apply activation function
+          self.z2 = self.tanh(self.z) # apply activation function
           self.z3 = np.dot(self.z2, self.W2) # product of hidden layer and W2 matricies
           o = self.sigmoid(self.z3) # final activation function
           #all shapes here are (17,2)
@@ -127,12 +127,29 @@ class Neural_Network(object):
         #derivative of sigmoid
         return s * (1 - s)
     
+    def tanh(self, s):
+        return (np.exp(2*s)-1)/(np.exp(2*s)+1)
+    
+    def tanhPrime(self, s):
+        return 1-(np.exp(2*s)-1)/(np.exp(2*s)+1)*(np.exp(2*s)-1)/(np.exp(2*s)+1)
+     
+    def softmax(self, y_hat):
+        tmp = y_hat - y_hat.max(axis=1).reshape(-1, 1)
+        exp_tmp = np.exp(tmp)
+        return exp_tmp / exp_tmp.sum(axis=1).reshape(-1, 1)
+    
+    def softmax_grad(self,y_hat):
+        # Reshape the 1-d softmax to 2-d so that np.dot will do the matrix multiplication
+        s = y_hat.reshape(-1,1)
+        return np.diagflat(s) - np.dot(s, s.T)
+    
+    
     def backward(self, X, y, o):
     # backward propagation
         self.o_error = y - o # compute error
         self.o_delta = self.o_error*self.sigmoidPrime(o) # applying derivative of sigmoid to error
         self.z2_error = self.o_delta.dot(self.W2.T) # calculate z2 error
-        self.z2_delta = self.z2_error*self.sigmoidPrime(self.z2) # applying derivative of sigmoid to z2 error
+        self.z2_delta = self.z2_error*self.tanhPrime(self.z2) # applying derivative of sigmoid to z2 error
         self.W1 += np.dot(np.transpose(X), self.z2_delta) # adjusting 1st set of weights
         self.W2 += np.dot(np.transpose(self.z2), self.o_delta) # adjusting 2nd set of weights
 
@@ -161,7 +178,7 @@ for i, entry in enumerate(X):
 
 y_relabelled = np.empty_like(y);
 for idx, entry in enumerate(y):
-    y_relabelled[idx]= map(convert_output, entry);
+    y_relabelled[idx]= list(map(convert_output, entry));
 X_train, X_test, y_train, y_test = train_test_split(X, y_relabelled, test_size=0.3, random_state=12)
 
 # Train our net for 100 cycles:
